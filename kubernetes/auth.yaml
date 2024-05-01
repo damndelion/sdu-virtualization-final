@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authservice
+spec:
+  replicas: 1 # Number of replicas (pods) to run
+  selector:
+    matchLabels:
+      app: authservice
+  template:
+    metadata:
+      labels:
+        app: authservice
+    spec:
+      containers:
+        - name: authservice
+          image: daniarrr/authservice # Replace with your actual image name
+          ports:
+            - containerPort: 8082
+          env:
+            - name: PG_URL
+              value: 'postgres://postgres:password@192.168.49.2/postgres'
+            - name: USER_TRANSPORT_URL
+              value: '10.244.0.72:8080'
+            - name: USER_GRPC_URL
+              value: '10.244.0.72:9091'
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: authservice
+spec:
+  selector:
+    app: authservice
+  ports:
+    - port: 8082
+      targetPort: 8082
+      protocol: TCP

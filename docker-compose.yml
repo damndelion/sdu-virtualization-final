@@ -28,7 +28,6 @@ services:
     environment:
       PG_URL: 'postgres://postgres:password@172.21.0.1/postgres'
       USER_GRPC_URL: 'user:9091'
-      REDIS_URL: 'redis:6379'
     ports:
       - 8080:8080
 
