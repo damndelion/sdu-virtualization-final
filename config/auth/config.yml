@@ -1,0 +1,26 @@
+app:
+  name: 'blockchain'
+  version: '1.0.0'
+
+http:
+  port: '8082'
+
+logger:
+  log_level: 'debug'
+  rollbar_env: 'blockchain'
+
+postgres:
+  pool_max: 2
+
+jwt:
+  secret_key: 'superSecretKey'
+  access_token_ttl: 3600
+  refresh_token_ttl: 86400
+
+
+transport:
+  user:
+    host: http://localhost:8080
+    timeout: 5s
+  userGrpc:
+    host: localhost:9091

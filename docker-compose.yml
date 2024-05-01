@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  auth:
+    build: ..
+    container_name: authservice
+    image: authservice
+    environment:
+      PG_URL: 'postgres://postgres:password@172.21.0.1/postgres'
+      USER_TRANSPORT_URL: 'http://user:8080'
+      USER_GRPC_URL: 'user:9091'
+    ports:
+      - 8082:8082
+    depends_on:
+      - postgres
+
+  user:
+    build: ..
+    container_name: userservice
+    image: userservice
+    environment:
+      PG_URL: 'postgres://postgres:password@172.21.0.1/postgres'
+      USER_GRPC_URL: 'user:9091'
+      REDIS_URL: 'redis:6379'
+    ports:
+      - 8080:8080
+
+
+volumes:
+  pg-data:
