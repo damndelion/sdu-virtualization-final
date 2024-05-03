@@ -14,16 +14,21 @@ spec:
     spec:
       containers:
         - name: authservice
-          image: daniarrr/authservice # Replace with your actual image name
+          image: daniarrr/authservice
+          livenessProbe:
+            httpGet:
+              port: 8080
+              path: "/healthz"
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            failureThreshold: 5
           ports:
             - containerPort: 8082
           env:
-            - name: PG_URL
-              value: 'postgres://postgres:password@192.168.49.2/postgres'
             - name: USER_TRANSPORT_URL
-              value: '10.244.0.72:8080'
+              value: '10.244.0.24:8080'
             - name: USER_GRPC_URL
-              value: '10.244.0.72:9091'
+              value: '10.244.0.24:9091'
 
 
 ---
@@ -39,3 +44,4 @@ spec:
     - port: 8082
       targetPort: 8082
       protocol: TCP
+

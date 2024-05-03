@@ -14,14 +14,19 @@ spec:
     spec:
       containers:
         - name: userservice
-          image: daniarrr/userservice # Replace with your actual image name
+          image: daniarrr/userservice
+          livenessProbe:
+            httpGet:
+              path: "/healthz"
+              port: 8082
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            failureThreshold: 5
           ports:
             - containerPort: 8080
           env:
             - name: PG_URL
-              value: 'postgres://postgres:password@192.168.49.2/postgres'
-            - name: USER_GRPC_URL
-              value: 'user:9091'
+              value: 'postgres://postgres:password@10.105.201.138/postgres'
 
 ---
 
